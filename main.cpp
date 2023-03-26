@@ -31,7 +31,7 @@ bool is_valid_ip(string input) {
 }
 
 void msg_special_address() {
-    cout<< "Ã‰ importante notar que o endereÃ§o IP 0.0.0.0 nÃ£o Ã© um endereÃ§o IP que possa ser atribuÃ­do a um dispositivo em uma rede. Ele Ã© usado apenas como um marcador especial para fins de roteamento e gerenciamento de rede.";
+    cout<< "É importante notar que o endereço IP 0.0.0.0 não é um endereço IP que possa ser atribuído a um dispositivo em uma rede. Ele é usado apenas como um marcador especial para fins de roteamento e gerenciamento de rede.";
 }
 
 string cidr_to_binary(int cidr) {
@@ -80,10 +80,10 @@ string binary_to_address(string binary) {
 
 int get_cidr_from_binary_mask(string mask_binary) {
 
-    // Converte o endereÃ§o de IP em um objeto bitset
+    // Converte o endereço de IP em um objeto bitset
     bitset<32> ip_bits(mask_binary);
 
-    // Conta quantos bits "1" hÃ¡ na sequÃªncia do endereÃ§o de IP
+    // Conta quantos bits "1" há na sequência do endereço de IP
     int count_ones = ip_bits.count();
 
     return count_ones;
@@ -123,15 +123,15 @@ void print_report(string ip_address, string ip_class, string network_mask, int c
     vector<string> broadcast_arr = split(broadcast, '.');
     vector<string> network_address_arr = split(network_address, '.');
 
-    cout<< "\nEndereÃ§o IP:\t\t\t\t" << ip_address <<endl;
+    cout<< "\nEndereço IP:\t\t\t\t" << ip_address <<endl;
 
     if (!ip_class.empty()) cout<< "Classe:\t\t\t\t\t" << ip_class <<endl;
     
-    cout<< "MÃ¡scara decimal:\t\t\t" << network_mask <<endl;
-    cout<< "MÃ¡scara CIDR:\t\t\t\t/" << cidr <<endl;
-    cout<< "NÃºmero de hosts:\t\t\t" << num_hosts <<endl;
-    cout<< "EndereÃ§o de rede:\t\t\t" << network_address <<endl;
-    cout<< "EndereÃ§o de broadcast:\t\t\t" << broadcast <<endl;
+    cout<< "Máscara decimal:\t\t\t" << network_mask <<endl;
+    cout<< "Máscara CIDR:\t\t\t\t/" << cidr <<endl;
+    cout<< "Número de hosts:\t\t\t" << num_hosts <<endl;
+    cout<< "Endereço de rede:\t\t\t" << network_address <<endl;
+    cout<< "Endereço de broadcast:\t\t\t" << broadcast <<endl;
 
     network_address_arr[3] = to_string(stoi(network_address_arr[3]) + 1);
     broadcast_arr[3] = to_string(stoi(broadcast_arr[3]) - 1);
@@ -141,23 +141,23 @@ void print_report(string ip_address, string ip_class, string network_mask, int c
         if (i > 0) {
             broadcast_str += "."; // adicionar um . entre os octetos
         }
-        broadcast_str += broadcast_arr[i]; // concatenar o octeto atual no endereÃ§o
+        broadcast_str += broadcast_arr[i]; // concatenar o octeto atual no endereço
     }
 
     for (int i = 0; i < network_address_arr.size(); i++) {
         if (i > 0) {
             network_address_str += "."; // adicionar um . entre os octetos
         }
-        network_address_str += network_address_arr[i]; // concatenar o octeto atual no endereÃ§o
+        network_address_str += network_address_arr[i]; // concatenar o octeto atual no endereço
     }
 
-    cout << "EndereÃ§o IP inicial utilizÃ¡vel:\t" << network_address_str <<endl;
-    cout << "EndereÃ§o IP final utilizÃ¡vel:\t\t" << broadcast_str <<endl;
+    cout << "Endereço IP inicial utilizável:\t\t" << network_address_str <<endl;
+    cout << "Endereço IP final utilizável:\t\t" << broadcast_str <<endl;
 }
 
 void calc_ip_com_classe(string ip_address) {
 
-    // ObtÃ©m o primeiro octeto do endereÃ§o usando uma implementaÃ§Ã£o minha do split e converte para inteiro
+    // Obtém o primeiro octeto do endereço usando uma implementação minha do split e converte para inteiro
     int first_octet = stoi(split(ip_address, '.')[0]);
 
     string ip_class, network_mask;
@@ -178,29 +178,29 @@ void calc_ip_com_classe(string ip_address) {
         cidr = 24;
     } else if (first_octet >= 224 && first_octet <= 239) {
         ip_class = "Classe D";
-        cout<< "EndereÃ§o IP: " << ip_address <<endl;
+        cout<< "Endereço IP: " << ip_address <<endl;
         cout<< "Classe: " << ip_class <<endl;
-        cout<< "EndereÃ§o reservado para multicast" <<endl;
+        cout<< "Endereço reservado para multicast" <<endl;
         return;
     } else if (first_octet >= 240 && first_octet <= 255) {
         ip_class = "Classe E";
-        cout<< "EndereÃ§o IP: " << ip_address <<endl;
+        cout<< "Endereço IP: " << ip_address <<endl;
         cout<< "Classe: " << ip_class <<endl;
-        cout<< "EndereÃ§o reservado para uso futuro" <<endl;
+        cout<< "Endereço reservado para uso futuro" <<endl;
         return;
     }
 
-    // Converte para binÃ¡rio
+    // Converte para binário
     string ip_address_binary = address_to_binary(ip_address);
     string mask_binary = address_to_binary(network_mask);
 
-    // Calcula o endereÃ§o de rede e converte de binÃ¡rio para decimal
+    // Calcula o endereço de rede e converte de binário para decimal
     string network_address = binary_to_address(calc_network_address(ip_address_binary, mask_binary));
 
-    // Calcula o nÃºmero de hosts
+    // Calcula o número de hosts
     int num_hosts = pow(2, 32 - cidr) - 2;
 
-    // Calcula o endereÃ§o broadcast
+    // Calcula o endereço broadcast
     string broadcast = calc_broadcast(ip_address_binary, mask_binary);
         
     print_report(ip_address, ip_class, network_mask, cidr, num_hosts, broadcast, network_address);
@@ -209,18 +209,18 @@ void calc_ip_com_classe(string ip_address) {
 void calc_ip_sem_classe_cidr(string ip_address, int cidr) {
     string ip_class;
 
-    // Converte para binÃ¡rio
+    // Converte para binário
     string ip_address_binary = address_to_binary(ip_address);
     string mask_binary = cidr_to_binary(cidr);
     string network_mask = binary_to_address(mask_binary);
 
-    // Calcula o endereÃ§o de rede e converte de binÃ¡rio para decimal
+    // Calcula o endereço de rede e converte de binário para decimal
     string network_address = binary_to_address(calc_network_address(ip_address_binary, mask_binary));
 
-    // Calcula o nÃºmero de hosts
+    // Calcula o número de hosts
     int num_hosts = pow(2, 32 - cidr) - 2;
 
-    // Calcula o endereÃ§o broadcast
+    // Calcula o endereço broadcast
     string broadcast = calc_broadcast(ip_address_binary, mask_binary);
         
     print_report(ip_address, "", network_mask, cidr, num_hosts, broadcast, network_address);
@@ -229,28 +229,28 @@ void calc_ip_sem_classe_cidr(string ip_address, int cidr) {
 void calc_ip_sem_classe_decimal(string ip_address, string mask) {
     string ip_class, start_ip, final_ip;
 
-    // Converte para binÃ¡rio
+    // Converte para binário
     string ip_address_binary = address_to_binary(ip_address);
     string mask_binary = address_to_binary(mask);
     string network_mask = binary_to_address(mask_binary);
 
-    // Calcula o endereÃ§o de rede e converte de binÃ¡rio para decimal
+    // Calcula o endereço de rede e converte de binário para decimal
     string network_address = binary_to_address(calc_network_address(ip_address_binary, mask_binary));
 
-    // Obtem CIDR atravÃ©s da mÃ¡scara em binÃ¡rio
+    // Obtem CIDR através da máscara em binário
     int cidr = get_cidr_from_binary_mask(mask_binary);
 
-    // Calcula o nÃºmero de hosts
+    // Calcula o número de hosts
     int num_hosts = pow(2, 32 - cidr) - 2;
 
-    // Calcula o endereÃ§o broadcast
+    // Calcula o endereço broadcast
     string broadcast = calc_broadcast(ip_address_binary, mask_binary);
         
     print_report(ip_address, "", network_mask, cidr, num_hosts, broadcast, network_address);
 }
 
 int main() {
-    setlocale(LC_ALL, "pt_BR.UTF-8");
+    setlocale(LC_ALL, "");
     string continuar = "sim";
     string line;
 
@@ -259,8 +259,8 @@ int main() {
 
         system("cls");
 
-        cout<< "Calculadora IPv4\nRedes de Computadores II\nAluno: JoÃ£o Vitor dos Santos Couto\n" <<endl;
-        cout<< "OpÃ§Ãµes\n1 - Calcular IP com classes\n2 - Calcular IP sem classe e notaÃ§Ã£o CIDR\n3 - Calcular IP sem classe e notaÃ§Ã£o decimal\n\nDigite o nÃºmero da opÃ§Ã£o desejada:" <<endl;
+        cout<< "Calculadora IPv4\nRedes de Computadores II\nAluno: João Vitor dos Santos Couto\n" <<endl;
+        cout<< "Opções\n1 - Calcular IP com classes\n2 - Calcular IP sem classe e notação CIDR\n3 - Calcular IP sem classe e notação decimal\n\nDigite o número da opção desejada:" <<endl;
         cin>> opcao;
 
         system("cls");
@@ -270,19 +270,21 @@ int main() {
             {
                 string input_ip;
                 cout<< "Calcular IP com classe\n" <<endl;
-                cout<< "Digite um IP vÃ¡lido: (padrÃ£o: n.n.n.n)" <<endl;
+                cout<< "Digite um IP válido: (padrão: n.n.n.n)" <<endl;
                 cin>> input_ip;
 
                 if (!is_valid_ip(input_ip)) {
                     system("cls");
-                    cout<< "EndereÃ§o IP fornecido Ã© invÃ¡lido, pressione qualquer tecla para tentar novamente." <<endl;
+                    cout<< "Endereço IP fornecido é inválido, pressione qualquer tecla para tentar novamente." <<endl;
                     cin.ignore();
                     getline(cin, line);
                     continue;
                 }
 
                 if (input_ip == "0.0.0.0") {
+                    system("cls");
                     msg_special_address();
+                    cout<< "\n\npressione qualquer tecla para tentar novamente." <<endl;
                     cin.ignore();
                     getline(cin, line);
                     continue;
@@ -296,13 +298,13 @@ int main() {
                 string input_ip;
                 string input_cidr;
 
-                cout<< "Calcular IP sem classe com notaÃ§Ã£o CIDR\n" <<endl;
-                cout<< "Digite um IP vÃ¡lido: (padrÃ£o: n.n.n.n)" <<endl;
+                cout<< "Calcular IP sem classe com notação CIDR\n" <<endl;
+                cout<< "Digite um IP válido: (padrão: n.n.n.n)" <<endl;
                 cin>> input_ip;
 
                 if (!is_valid_ip(input_ip)) {
                     system("cls");
-                    cout<< "EndereÃ§o IP fornecido Ã© invÃ¡lido, pressione qualquer tecla para tentar novamente." <<endl;
+                    cout<< "Endereço IP fornecido é inválido, pressione qualquer tecla para tentar novamente." <<endl;
                     cin.ignore();
                     getline(cin, line);
                     continue;
@@ -316,14 +318,14 @@ int main() {
                     continue;
                 }
 
-                cout<< "\nDigite a mÃ¡scara na notaÃ§Ã£o CIDR: (padrÃ£o: /n)" <<endl;
+                cout<< "\nDigite a máscara na notação CIDR: (padrão: /n)" <<endl;
                 cin>> input_cidr;
 
                 regex cidrRegex("^/[0-9]+$");
 
                 if (!regex_match(input_cidr, cidrRegex)) {
                     system("cls");
-                    cout<< "O CIDR fornecido Ã© invÃ¡lido, pressione qualquer tecla para tentar novamente." <<endl;
+                    cout<< "O CIDR fornecido é inválido, pressione qualquer tecla para tentar novamente." <<endl;
                     cin.ignore();
                     getline(cin, line);
                     continue;
@@ -333,7 +335,7 @@ int main() {
 
                 if (cidr < 0 || cidr > 32) {
                     system("cls");
-                    cout<< "O CIDR fornecido Ã© invÃ¡lido, pressione qualquer tecla para tentar novamente." <<endl;
+                    cout<< "O CIDR fornecido é inválido, pressione qualquer tecla para tentar novamente." <<endl;
                     cin.ignore();
                     getline(cin, line);
                     continue;
@@ -347,13 +349,13 @@ int main() {
                 string input_ip;
                 string input_mask;
 
-                cout<< "Calcular IP sem classe com notaÃ§Ã£o decimal\n" <<endl;
-                cout<< "Digite um IP vÃ¡lido: (padrÃ£o: n.n.n.n)" <<endl;
+                cout<< "Calcular IP sem classe com notação decimal\n" <<endl;
+                cout<< "Digite um IP válido: (padrão: n.n.n.n)" <<endl;
                 cin>> input_ip;
 
                 if (!is_valid_ip(input_ip)) {
                     system("cls");
-                    cout<< "EndereÃ§o IP fornecido Ã© invÃ¡lido, pressione qualquer tecla para tentar novamente." <<endl;
+                    cout<< "Endereço IP fornecido é inválido, pressione qualquer tecla para tentar novamente." <<endl;
                     cin.ignore();
                     getline(cin, line);
                     continue;
@@ -367,12 +369,12 @@ int main() {
                     continue;
                 }
 
-                cout<< "\nDigite a mÃ¡scara na notaÃ§Ã£o decimal: (padrÃ£o: n.n.n.n)" <<endl;
+                cout<< "\nDigite a máscara na notação decimal: (padrão: n.n.n.n)" <<endl;
                 cin>> input_mask;
 
                 if (!is_valid_ip(input_mask)) {
                     system("cls");
-                    cout<< "A mÃ¡scara fornecida Ã© invÃ¡lida, pressione qualquer tecla para tentar novamente." <<endl;
+                    cout<< "A máscara fornecida é inválida, pressione qualquer tecla para tentar novamente." <<endl;
                     cin.ignore();
                     getline(cin, line);
                     continue;
@@ -385,7 +387,7 @@ int main() {
             
             default:
                 system("cls");
-                cout<< "OpÃ§Ã£o invÃ¡lida, pressione qualquer tecla para tentar novamente." <<endl;
+                cout<< "Opção inválida, pressione qualquer tecla para tentar novamente." <<endl;
                 cin.ignore();
                 getline(cin, line);
                 break;
